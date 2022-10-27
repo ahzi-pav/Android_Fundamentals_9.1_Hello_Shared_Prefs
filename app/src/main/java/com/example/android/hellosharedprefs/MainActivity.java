@@ -22,6 +22,10 @@ import android.graphics.drawable.ColorDrawable;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -98,6 +102,24 @@ public class MainActivity extends AppCompatActivity {
         mColor = color;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemID = item.getItemId();
+        if (itemID == R.id.settings) {
+            Intent intent = new Intent(this, SharedPreferenceActivity.class);
+            intent.putExtra("Color", mColor);
+            intent.putExtra("Count", mCount);
+            startActivity(intent);
+        }
+        return true;
+    }
+
     public void countUp(View view) {
         mCount++;
         mShowCountTextView.setText(String.format("%s", mCount));
@@ -119,12 +141,4 @@ public class MainActivity extends AppCompatActivity {
         preferencesEditor.apply();
 
     }
-
-    public void launchSettings(View view) {
-        Intent intent = new Intent(this, SharedPreferenceActivity.class);
-        intent.putExtra("Color", mColor);
-        intent.putExtra("Count", mCount);
-        startActivity(intent);
-    }
-
 }
